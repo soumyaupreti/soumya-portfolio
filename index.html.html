@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Soumya Upreti</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FAF8F4;
+  --ink:#1A1814;
+  --muted:#6B6660;
+  --accent:#8B6F47;
+  --accent-light:#C4A882;
+  --border:#E8E4DC;
+  --card:#FFFFFF;
+  --soft:#F2EEE8;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden}
+
+/* PASSWORD SCREEN */
+#lock-screen{position:fixed;inset:0;background:var(--ink);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.6s ease}
+#lock-screen.hide{opacity:0;pointer-events:none}
+.lock-name{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,4rem);color:var(--cream);font-weight:300;letter-spacing:0.08em;margin-bottom:0.5rem}
+.lock-sub{color:#888;font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3rem}
+.lock-input-wrap{position:relative;margin-bottom:1rem}
+#lock-input{background:transparent;border:none;border-bottom:1px solid #444;color:var(--cream);font-size:1.5rem;letter-spacing:0.4em;width:160px;text-align:center;padding:0.5rem 0;outline:none;font-family:'DM Sans',sans-serif}
+#lock-input::placeholder{color:#444;letter-spacing:0.2em;font-size:1rem}
+.lock-btn{background:transparent;border:1px solid #555;color:var(--cream);padding:0.7rem 2.5rem;font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-top:1rem}
+.lock-btn:hover{background:var(--cream);color:var(--ink)}
+.lock-error{color:#c0392b;font-size:0.8rem;margin-top:0.5rem;opacity:0;transition:opacity 0.2s;text-align:center}
+.lock-error.show{opacity:1}
+.lock-dots{display:flex;gap:8px;margin-bottom:1.5rem}
+.lock-dot{width:8px;height:8px;border-radius:50%;background:#333;transition:background 0.2s}
+.lock-dot.filled{background:var(--accent-light)}
+
+/* MAIN CONTENT */
+#main{opacity:0;transition:opacity 0.6s ease;display:none}
+#main.show{opacity:1;display:block}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:flex;justify-content:space-between;align-items:center;background:rgba(250,248,244,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;letter-spacing:0.05em;color:var(--ink)}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{font-size:0.8rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color 0.2s}
+.nav-links a:hover{color:var(--ink)}
+
+/* SECTIONS */
+section{padding:5rem 3rem;max-width:1100px;margin:0 auto}
+section:first-of-type{padding-top:8rem}
+
+/* HERO */
+.hero{min-height:90vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding-top:6rem}
+.hero-eyebrow{font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1.5rem}
+.hero-name{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,9vw,7rem);font-weight:300;line-height:1;letter-spacing:-0.01em;margin-bottom:1rem}
+.hero-name em{font-style:italic;color:var(--accent)}
+.hero-role{font-size:0.9rem;color:var(--muted);letter-spacing:0.05em;margin-bottom:2.5rem;line-height:1.7}
+.typing-text{color:var(--accent);font-weight:500}
+.hero-time{position:absolute;top:7rem;right:0;text-align:right}
+.hero-clock{font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:300;color:var(--ink);line-height:1}
+.hero-date{font-size:0.75rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:0.3rem}
+.hero-tags{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem}
+.tag{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.9rem;border:1px solid var(--border);border-radius:99px;color:var(--muted)}
+
+/* QUOTE */
+.quote-section{background:var(--ink);color:var(--cream);border-radius:16px;padding:3rem;margin:2rem 0;position:relative;overflow:hidden}
+.quote-section::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:rgba(139,111,71,0.15)}
+.quote-label{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent-light);margin-bottom:1.5rem}
+.quote-text{font-family:'Cormorant Garamond',serif;font-size:clamp(1.2rem,3vw,1.8rem);font-weight:300;font-style:italic;line-height:1.6;margin-bottom:1rem}
+.quote-author{font-size:0.8rem;color:#888;letter-spacing:0.1em}
+.quote-refresh{background:transparent;border:1px solid #444;color:#aaa;padding:0.4rem 1rem;font-size:0.75rem;letter-spacing:0.1em;cursor:pointer;border-radius:4px;transition:all 0.2s;margin-top:1.2rem}
+.quote-refresh:hover{border-color:var(--accent-light);color:var(--accent-light)}
+.quote-loading{color:#666;font-style:italic;font-size:0.9rem}
+
+/* SKILLS */
+.section-label{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:300;margin-bottom:2.5rem;line-height:1.1}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem}
+.skill-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.5rem;transition:border-color 0.2s,transform 0.2s}
+.skill-card:hover{border-color:var(--accent-light);transform:translateY(-2px)}
+.skill-cat{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem}
+.skill-name{font-size:0.95rem;font-weight:500;margin-bottom:0.5rem}
+.skill-bar-bg{height:3px;background:var(--border);border-radius:99px;overflow:hidden}
+.skill-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));border-radius:99px;transition:width 1s ease}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.about-text{font-size:1.05rem;line-height:1.8;color:var(--muted)}
+.about-text p{margin-bottom:1rem}
+.about-facts{display:flex;flex-direction:column;gap:1rem}
+.fact-item{border-left:2px solid var(--accent-light);padding-left:1rem}
+.fact-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:0.2rem}
+.fact-value{font-size:0.95rem;font-weight:500}
+
+/* DAILY DASHBOARD */
+.dashboard-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.dash-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem}
+.dash-title{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+.todo-input-row{display:flex;gap:0.5rem;margin-bottom:1rem}
+.todo-input-row input{flex:1;border:1px solid var(--border);border-radius:6px;padding:0.5rem 0.8rem;font-size:0.85rem;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);outline:none}
+.todo-input-row input:focus{border-color:var(--accent-light)}
+.add-btn{background:var(--ink);color:var(--cream);border:none;border-radius:6px;padding:0.5rem 1rem;font-size:0.8rem;cursor:pointer;white-space:nowrap}
+.todo-list{display:flex;flex-direction:column;gap:0.4rem;max-height:180px;overflow-y:auto}
+.todo-item{display:flex;align-items:center;gap:0.6rem;padding:0.4rem 0.5rem;border-radius:6px;transition:background 0.15s}
+.todo-item:hover{background:var(--soft)}
+.todo-item input[type=checkbox]{accent-color:var(--accent);width:15px;height:15px;flex-shrink:0}
+.todo-item span{font-size:0.88rem;flex:1}
+.todo-item span.done{text-decoration:line-through;color:var(--muted)}
+.todo-del{background:none;border:none;color:#ccc;cursor:pointer;font-size:1rem;padding:0 2px}
+.todo-del:hover{color:#999}
+
+.habit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem}
+.habit-item{text-align:center;padding:0.7rem 0.3rem;border:1px solid var(--border);border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:0.75rem;color:var(--muted)}
+.habit-item.done{background:var(--accent);border-color:var(--accent);color:white}
+.habit-emoji{font-size:1.2rem;display:block;margin-bottom:0.2rem}
+
+/* SOCIALS / LINKS VAULT */
+.links-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem}
+.link-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem 1.5rem;display:flex;align-items:center;gap:1rem;text-decoration:none;color:var(--ink);transition:all 0.2s}
+.link-card:hover{border-color:var(--accent-light);transform:translateY(-2px)}
+.link-icon{width:38px;height:38px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.link-info{flex:1;min-width:0}
+.link-platform{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:0.2rem}
+.link-handle{font-size:0.88rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.copy-btn{background:none;border:1px solid var(--border);border-radius:4px;padding:0.2rem 0.5rem;font-size:0.7rem;color:var(--muted);cursor:pointer;transition:all 0.15s;white-space:nowrap}
+.copy-btn:hover{border-color:var(--accent-light);color:var(--accent)}
+
+/* BLOG */
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem}
+.blog-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;transition:all 0.2s}
+.blog-card:hover{border-color:var(--accent-light);transform:translateY(-2px)}
+.blog-date{font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem}
+.blog-title{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:400;margin-bottom:0.6rem;line-height:1.3}
+.blog-excerpt{font-size:0.85rem;color:var(--muted);line-height:1.6}
+.blog-new-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:0.7rem 1.5rem;font-size:0.8rem;letter-spacing:0.1em;cursor:pointer;color:var(--muted);transition:all 0.2s;margin-top:1.2rem}
+.blog-new-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* AI CHAT */
+.chat-container{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.chat-header{background:var(--ink);color:var(--cream);padding:1rem 1.5rem;display:flex;align-items:center;gap:0.8rem}
+.chat-avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:500}
+.chat-name{font-size:0.9rem;font-weight:500}
+.chat-status{font-size:0.72rem;color:#888}
+.chat-messages{height:300px;overflow-y:auto;padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem}
+.msg{max-width:75%;padding:0.7rem 1rem;border-radius:12px;font-size:0.88rem;line-height:1.5}
+.msg.bot{background:var(--soft);border-radius:4px 12px 12px 12px;align-self:flex-start}
+.msg.user{background:var(--ink);color:var(--cream);border-radius:12px 4px 12px 12px;align-self:flex-end}
+.msg.loading{color:var(--muted);font-style:italic}
+.chat-input-row{display:flex;gap:0.5rem;padding:1rem 1.2rem;border-top:1px solid var(--border)}
+.chat-input-row input{flex:1;border:1px solid var(--border);border-radius:8px;padding:0.6rem 1rem;font-size:0.88rem;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);outline:none}
+.chat-input-row input:focus{border-color:var(--accent-light)}
+.chat-send{background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:0.6rem 1.2rem;font-size:0.85rem;cursor:pointer;transition:opacity 0.2s}
+.chat-send:hover{opacity:0.8}
+
+/* CONTACT */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
+.contact-form{display:flex;flex-direction:column;gap:1rem}
+.contact-form input,.contact-form textarea{border:1px solid var(--border);border-radius:8px;padding:0.8rem 1rem;font-size:0.9rem;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);outline:none;transition:border-color 0.2s;width:100%}
+.contact-form input:focus,.contact-form textarea:focus{border-color:var(--accent-light)}
+.contact-form textarea{height:120px;resize:vertical}
+.contact-submit{background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:0.8rem 2rem;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;width:100%}
+.contact-submit:hover{opacity:0.8}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:0 auto}
+.footer-text{font-size:0.8rem;color:var(--muted)}
+
+/* DIVIDER */
+.divider{border:none;border-top:1px solid var(--border);margin:0}
+
+/* CALENDAR */
+.cal-layout{display:grid;grid-template-columns:1fr 300px;gap:1.5rem;align-items:start}
+.cal-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.5rem}
+.cal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+.cal-nav-btn{background:none;border:1px solid var(--border);border-radius:6px;width:32px;height:32px;cursor:pointer;font-size:1rem;color:var(--muted);transition:all 0.15s;display:flex;align-items:center;justify-content:center}
+.cal-nav-btn:hover{border-color:var(--accent);color:var(--accent)}
+.cal-month-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:400;letter-spacing:0.03em}
+.cal-weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.cal-weekdays span{text-align:center;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:0.4rem 0}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;cursor:pointer;font-size:0.82rem;transition:all 0.15s;position:relative;border:1px solid transparent}
+.cal-day:hover{background:var(--soft);border-color:var(--border)}
+.cal-day.today{background:var(--soft);border-color:var(--accent-light);font-weight:500}
+.cal-day.selected{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.cal-day.other-month{color:var(--border)}
+.cal-day.other-month:hover{background:transparent}
+.cal-day-num{line-height:1}
+.cal-day-dot{width:5px;height:5px;border-radius:50%;margin-top:2px;flex-shrink:0}
+.cal-sidebar{display:flex;flex-direction:column;gap:1rem}
+.cal-selected-info{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem}
+.cal-sel-date{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:400}
+.cal-mark-label{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.6rem}
+.cal-mark-btns{display:grid;grid-template-columns:1fr 1fr;gap:0.4rem}
+.cal-mark-btn{background:var(--soft);border:1px solid var(--border);border-radius:6px;padding:0.4rem 0.5rem;font-size:0.75rem;cursor:pointer;transition:all 0.15s;text-align:left}
+.cal-mark-btn:hover{border-color:var(--accent-light);background:var(--cream)}
+.cal-legend{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem}
+.cal-legend-title{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem}
+.cal-legend-item{display:flex;align-items:center;gap:0.6rem;font-size:0.82rem;color:var(--ink);margin-bottom:0.5rem}
+.cal-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.cal-upcoming{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.2rem}
+.cal-upcoming-title{font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-bottom:0.8rem}
+.cal-up-item{display:flex;gap:0.6rem;align-items:flex-start;margin-bottom:0.7rem;font-size:0.82rem}
+.cal-up-date{color:var(--accent);font-weight:500;white-space:nowrap;min-width:50px}
+.cal-up-text{color:var(--ink);line-height:1.4}
+@media(max-width:768px){.cal-layout{grid-template-columns:1fr}}
+
+/* ASSIGNMENT SOLVER */
+.asgn-container{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem}
+.asgn-top-row{display:flex;gap:1rem;flex-wrap:wrap}
+.asgn-field{display:flex;flex-direction:column;gap:0.4rem;flex:1;min-width:200px}
+.asgn-label{font-size:0.7rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--accent)}
+.asgn-field input,.asgn-field textarea{border:1px solid var(--border);border-radius:8px;padding:0.7rem 1rem;font-size:0.9rem;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);outline:none;transition:border-color 0.2s;width:100%;resize:vertical}
+.asgn-field input:focus,.asgn-field textarea:focus{border-color:var(--accent-light)}
+.asgn-options{margin-top:1.2rem;display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.asgn-options-label{font-size:0.7rem;letter-spacing:0.13em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.asgn-style-btns{display:flex;flex-wrap:wrap;gap:0.4rem}
+.asgn-style-btn{background:var(--soft);border:1px solid var(--border);border-radius:99px;padding:0.35rem 0.9rem;font-size:0.75rem;cursor:pointer;color:var(--muted);transition:all 0.15s;font-family:'DM Sans',sans-serif}
+.asgn-style-btn:hover{border-color:var(--accent-light);color:var(--accent)}
+.asgn-style-btn.active{background:var(--ink);color:var(--cream);border-color:var(--ink)}
+.asgn-submit{margin-top:1.2rem;background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:0.8rem 2rem;font-size:0.88rem;letter-spacing:0.08em;cursor:pointer;transition:opacity 0.2s;font-family:'DM Sans',sans-serif}
+.asgn-submit:hover{opacity:0.8}
+.asgn-submit:disabled{opacity:0.5;cursor:not-allowed}
+.asgn-output-wrap{margin-top:1.5rem;border-top:1px solid var(--border);padding-top:1.5rem}
+.asgn-output-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.asgn-output-title{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent)}
+.asgn-copy-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:0.3rem 0.8rem;font-size:0.75rem;color:var(--muted);cursor:pointer;transition:all 0.15s;font-family:'DM Sans',sans-serif}
+.asgn-copy-btn:hover{border-color:var(--accent);color:var(--accent)}
+.asgn-answer{font-size:0.92rem;line-height:1.85;color:var(--ink);white-space:pre-wrap;font-family:'DM Sans',sans-serif}
+.asgn-answer h1,.asgn-answer h2,.asgn-answer h3{font-family:'Cormorant Garamond',serif;font-weight:400;margin:1rem 0 0.4rem;color:var(--ink)}
+.asgn-answer h2{font-size:1.2rem}
+.asgn-answer h3{font-size:1rem;color:var(--accent)}
+.asgn-answer strong{font-weight:600}
+.asgn-answer em{font-style:italic}
+.asgn-thinking{color:var(--muted);font-style:italic;font-size:0.85rem;animation:pulse 1.5s ease infinite}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 2px;font-size:0.9em;line-height:1.1}
+.frac sup{border-bottom:1px solid var(--ink);padding:0 2px;font-size:0.85em}
+.frac sub{padding:0 2px;font-size:0.85em}
+.frac span{display:none}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp 0.6s ease forwards}
+.delay-1{animation-delay:0.1s;opacity:0}
+.delay-2{animation-delay:0.2s;opacity:0}
+.delay-3{animation-delay:0.3s;opacity:0}
+.delay-4{animation-delay:0.4s;opacity:0}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem}
+  .nav-links{gap:1rem}
+  section{padding:4rem 1.5rem}
+  .about-grid,.contact-grid,.dashboard-grid{grid-template-columns:1fr}
+  .hero-time{position:static;text-align:left;margin-bottom:1rem}
+}
+</style>
+</head>
+<body>
+
+<!-- LOCK SCREEN -->
+<div id="lock-screen">
+  <div class="lock-name fade-up">Soumya Upreti</div>
+  <div class="lock-sub delay-1 fade-up">Private space — enter password</div>
+  <div class="lock-dots" id="lock-dots">
+    <div class="lock-dot"></div><div class="lock-dot"></div>
+    <div class="lock-dot"></div><div class="lock-dot"></div>
+    <div class="lock-dot"></div><div class="lock-dot"></div>
+  </div>
+  <div class="lock-input-wrap">
+    <input type="password" id="lock-input" placeholder="••••••" maxlength="6" autocomplete="off"/>
+  </div>
+  <button class="lock-btn" onclick="checkPassword()">Enter</button>
+  <div class="lock-error" id="lock-error">Incorrect password. Try again.</div>
+</div>
+
+<!-- MAIN PAGE -->
+<div id="main">
+
+<nav>
+  <div class="nav-logo">SU</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#dashboard">Dashboard</a>
+    <a href="#calendar">Calendar</a>
+    <a href="#links">Links</a>
+    <a href="#assignment" onclick="document.getElementById('assignment').scrollIntoView({behavior:'smooth'});return false;">Assignment</a>
+    <a href="#chat">Chat</a>
+    <a href="#contact">Contact</a>
+    <a href="#" onclick="toggleCATPage();return false;" style="color:var(--accent);font-weight:500">CAT 2027</a>
+  </div>
+</nav>
+
+<section class="hero" id="hero">
+  <div class="hero-time">
+    <div class="hero-clock" id="clock">--:--</div>
+    <div class="hero-date" id="date-display"></div>
+  </div>
+  <div class="hero-eyebrow fade-up">Soumya Upreti · Delhi, India</div>
+  <h1 class="hero-name fade-up delay-1">
+    Engineer.<br><em>Artist.</em><br>Explorer.
+  </h1>
+  <p class="hero-role fade-up delay-2">
+    2nd Year Automation & Robotics · USAR, Delhi<br>
+    <span class="typing-text" id="typing-text"></span>
+  </p>
+  <div class="hero-tags fade-up delay-3">
+    <span class="tag">Robotics</span>
+    <span class="tag">AI & NLP</span>
+    <span class="tag">Travelling</span>
+    <span class="tag">USAR Delhi</span>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- QUOTE -->
+<section id="quote-sec" style="padding-top:3rem;padding-bottom:3rem">
+  <div class="quote-section">
+    <div class="quote-label">Today's quote</div>
+    <div class="quote-text" id="quote-text"><span class="quote-loading">Fetching your quote...</span></div>
+    <div class="quote-author" id="quote-author"></div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-label">About me</div>
+  <div class="section-title">A little about<br><em style="font-style:italic;color:var(--accent)">who I am</em></div>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm Soumya — a second-year Automation & Robotics student at USAR, Delhi, with a deep curiosity for how intelligent systems work and how creativity can be coded into machines.</p>
+      <p>Beyond engineering, I'm a trained classical dancer — movement has taught me discipline, expression, and attention to detail that I carry into everything I build. I love exploring new places and finding the intersection between art and technology.</p>
+      <p>I believe the best engineers are also the most curious humans.</p>
+    </div>
+    <div class="about-facts">
+      <div class="fact-item">
+        <div class="fact-label">Currently</div>
+        <div class="fact-value">2nd Year B.Tech · Automation & Robotics</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-label">University</div>
+        <div class="fact-value">USAR, GGSIPU · Delhi</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-label">Art form</div>
+        <div class="fact-value">Professional Kathak dancer</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-label">Interests</div>
+        <div class="fact-value">AI/NLP, Robotics, Travelling</div>
+      </div>
+      <div class="fact-item">
+        <div class="fact-label">Based in</div>
+        <div class="fact-value">Delhi, India</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-label">Technical skills</div>
+  <div class="section-title">What I<br><em style="font-style:italic;color:var(--accent)">work with</em></div>
+  <div class="skills-grid" id="skills-grid"></div>
+</section>
+
+<hr class="divider"/>
+
+<!-- DAILY DASHBOARD -->
+<section id="dashboard">
+  <div class="section-label">Daily dashboard</div>
+  <div class="section-title">My<br><em style="font-style:italic;color:var(--accent)">personal space</em></div>
+  <div class="dashboard-grid">
+    <div class="dash-card">
+      <div class="dash-title">To-do list</div>
+      <div class="todo-input-row">
+        <input type="text" id="todo-input" placeholder="Add a task..." onkeydown="if(event.key==='Enter')addTodo()"/>
+        <button class="add-btn" onclick="addTodo()">Add</button>
+      </div>
+      <div class="todo-list" id="todo-list"></div>
+    </div>
+    <div class="dash-card" style="grid-column:1/-1">
+      <div class="dash-title">Habit tracker</div>
+      <div class="habit-grid" id="habit-grid"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- CALENDAR -->
+<section id="calendar">
+  <div class="section-label">Calendar</div>
+  <div class="section-title">My<br><em style="font-style:italic;color:var(--accent)">schedule & dates</em></div>
+  <div class="cal-layout">
+    <div class="cal-card">
+      <div class="cal-header">
+        <button class="cal-nav-btn" onclick="changeMonth(-1)">&#8592;</button>
+        <div class="cal-month-title" id="cal-month-title"></div>
+        <button class="cal-nav-btn" onclick="changeMonth(1)">&#8594;</button>
+      </div>
+      <div class="cal-weekdays">
+        <span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+      </div>
+      <div class="cal-grid" id="cal-grid"></div>
+    </div>
+    <div class="cal-sidebar">
+      <div class="cal-selected-info" id="cal-selected-info">
+        <div class="cal-sel-date" id="cal-sel-date">Select a date</div>
+        <div class="cal-sel-note" id="cal-sel-note" style="color:var(--muted);font-size:0.85rem;margin-top:0.3rem"></div>
+        <div id="cal-mark-options" style="display:none;margin-top:1rem">
+          <div class="cal-mark-label">Mark as</div>
+          <div class="cal-mark-btns">
+            <button class="cal-mark-btn" data-type="exam" onclick="markDate('exam')">📝 Exam</button>
+            <button class="cal-mark-btn" data-type="holiday" onclick="markDate('holiday')">🌴 Holiday</button>
+            <button class="cal-mark-btn" data-type="important" onclick="markDate('important')">⭐ Important</button>
+            <button class="cal-mark-btn" data-type="cat" onclick="markDate('cat')">📚 CAT study</button>
+            <button class="cal-mark-btn" data-type="personal" onclick="markDate('personal')">💃 Personal</button>
+            <button class="cal-mark-btn" data-type="clear" onclick="markDate('clear')">✕ Clear</button>
+          </div>
+          <div style="margin-top:1rem">
+            <input type="text" id="cal-note-input" placeholder="Add a note for this date..." style="width:100%;font-size:0.85rem;"/>
+            <button class="add-btn" style="margin-top:0.5rem;width:100%;font-size:0.8rem;" onclick="saveNote()">Save note</button>
+          </div>
+        </div>
+      </div>
+      <div class="cal-legend">
+        <div class="cal-legend-title">Legend</div>
+        <div class="cal-legend-item"><span class="cal-dot" style="background:#E24B4A"></span>Exam</div>
+        <div class="cal-legend-item"><span class="cal-dot" style="background:#1D9E75"></span>Holiday</div>
+        <div class="cal-legend-item"><span class="cal-dot" style="background:#EF9F27"></span>Important</div>
+        <div class="cal-legend-item"><span class="cal-dot" style="background:#185FA5"></span>CAT study</div>
+        <div class="cal-legend-item"><span class="cal-dot" style="background:#8B6F47"></span>Personal</div>
+      </div>
+      <div class="cal-upcoming" id="cal-upcoming"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- LINKS VAULT -->
+<section id="links">
+  <div class="section-label">Links vault</div>
+  <div class="section-title">My<br><em style="font-style:italic;color:var(--accent)">socials & contacts</em></div>
+  <div class="links-grid" id="links-grid"></div>
+</section>
+
+<hr class="divider"/>
+
+<!-- BLOG -->
+<section id="blog">
+  <div class="section-label">Thoughts & blog</div>
+  <div class="section-title">What's on<br><em style="font-style:italic;color:var(--accent)">my mind</em></div>
+  <div class="blog-grid" id="blog-grid"></div>
+  <button class="blog-new-btn" onclick="newBlogPost()">+ Write a new thought</button>
+</section>
+
+<hr class="divider"/>
+
+<!-- ASSIGNMENT SOLVER -->
+<section id="assignment">
+  <div class="section-label">Assignment solver</div>
+  <div class="section-title">Write it like<br><em style="font-style:italic;color:var(--accent)">an answer</em></div>
+  <div class="asgn-container">
+    <div class="asgn-top-row">
+      <div class="asgn-field">
+        <label class="asgn-label">Subject / context <span style="color:var(--muted);font-weight:300">(optional)</span></label>
+        <input type="text" id="asgn-subject" placeholder="e.g. Industrial Engineering, Business Ethics, Robotics..." />
+      </div>
+      <div class="asgn-field" style="flex:0.4">
+        <label class="asgn-label">Marks / word limit <span style="color:var(--muted);font-weight:300">(optional)</span></label>
+        <input type="text" id="asgn-marks" placeholder="e.g. 5 marks, 300 words" />
+      </div>
+    </div>
+    <div class="asgn-field" style="margin-top:1rem">
+      <label class="asgn-label">Your question</label>
+      <textarea id="asgn-question" placeholder="Paste or type your assignment question here..." rows="4"></textarea>
+    </div>
+    <div class="asgn-options">
+      <span class="asgn-options-label">Answer style</span>
+      <div class="asgn-style-btns">
+        <button class="asgn-style-btn active" data-style="auto" onclick="selectStyle(this)">Auto detect</button>
+        <button class="asgn-style-btn" data-style="structured" onclick="selectStyle(this)">Structured (headings)</button>
+        <button class="asgn-style-btn" data-style="paragraph" onclick="selectStyle(this)">Paragraphs</button>
+        <button class="asgn-style-btn" data-style="points" onclick="selectStyle(this)">Point-wise</button>
+        <button class="asgn-style-btn" data-style="short" onclick="selectStyle(this)">Short answer</button>
+      </div>
+    </div>
+    <button class="asgn-submit" id="asgn-submit" onclick="solveAssignment()">Generate answer ↗</button>
+
+    <!-- OUTPUT -->
+    <div class="asgn-output-wrap" id="asgn-output-wrap" style="display:none">
+      <div class="asgn-output-header">
+        <div class="asgn-output-title">Answer</div>
+        <div style="display:flex;gap:0.6rem">
+          <button class="asgn-copy-btn" onclick="copyAnswer()">Copy</button>
+          <button class="asgn-copy-btn" onclick="clearAnswer()">Clear</button>
+        </div>
+      </div>
+      <div class="asgn-answer" id="asgn-answer"></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- AI CHAT -->
+<section id="chat">
+  <div class="section-label">AI assistant</div>
+  <div class="section-title">Talk to<br><em style="font-style:italic;color:var(--accent)">Soumya's AI</em></div>
+  <div class="chat-container">
+    <div class="chat-header">
+      <div class="chat-avatar">SU</div>
+      <div>
+        <div class="chat-name">Soumya's AI</div>
+        <div class="chat-status">Ask me anything about Soumya</div>
+      </div>
+    </div>
+    <div class="chat-messages" id="chat-messages">
+      <div class="msg bot">Hi! I'm Soumya's AI. Ask me anything about her — her projects, skills, interests, or anything else you're curious about!</div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chat-input" placeholder="Ask something about Soumya..." onkeydown="if(event.key==='Enter')sendChat()"/>
+      <button class="chat-send" onclick="sendChat()">Send</button>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Get in touch</div>
+  <div class="section-title">Let's<br><em style="font-style:italic;color:var(--accent)">connect</em></div>
+  <div class="contact-grid">
+    <div>
+      <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;margin-bottom:1.5rem">Whether you want to collaborate, discuss ideas, or just say hi — I'd love to hear from you.</p>
+      <div style="display:flex;flex-direction:column;gap:0.8rem">
+        <div style="font-size:0.85rem"><span style="color:var(--accent);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:0.2rem">Personal email</span>soumyaupreti7@gmail.com</div>
+        <div style="font-size:0.85rem"><span style="color:var(--accent);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:0.2rem">College email</span>soumya.4719052024@std.ggsipu.ac.in</div>
+        <div style="font-size:0.85rem"><span style="color:var(--accent);font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:0.2rem">Work email</span>soumyaupretiwork@gmail.com</div>
+      </div>
+    </div>
+    <div class="contact-form">
+      <input type="text" placeholder="Your name"/>
+      <input type="email" placeholder="Your email"/>
+      <textarea placeholder="Your message..."></textarea>
+      <button class="contact-submit" onclick="alert('Message sent! (Connect a backend to make this live)')">Send message</button>
+    </div>
+  </div>
+</section>
+
+<hr class="divider"/>
+<footer>
+  <div class="footer-text">© 2025 Soumya Upreti · Built with curiosity</div>
+  <div class="footer-text" id="footer-time"></div>
+</footer>
+
+</div><!-- end #main -->
+
+<!-- CAT 2027 PAGE -->
+<div id="cat-page" style="display:none;opacity:0;transition:opacity 0.4s ease;">
+<style>
+.cat-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:flex;justify-content:space-between;align-items:center;background:rgba(250,248,244,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.cat-back{background:none;border:1px solid var(--border);border-radius:6px;padding:0.4rem 1rem;font-size:0.8rem;letter-spacing:0.1em;cursor:pointer;color:var(--muted);transition:all 0.2s}
+.cat-back:hover{border-color:var(--accent);color:var(--accent)}
+.cat-wrap{max-width:900px;margin:0 auto;padding:7rem 3rem 4rem}
+.cat-hero{text-align:center;margin-bottom:3rem}
+.cat-eyebrow{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem}
+.cat-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,7vw,5rem);font-weight:300;line-height:1;margin-bottom:1rem}
+.cat-title em{font-style:italic;color:var(--accent)}
+.cat-subtitle{font-size:0.88rem;color:var(--muted);letter-spacing:0.05em}
+.cat-overall{background:var(--ink);color:var(--cream);border-radius:16px;padding:2rem 2.5rem;margin-bottom:2rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.cat-overall-left .label{font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:#888;margin-bottom:0.3rem}
+.cat-overall-left .big{font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:300;line-height:1;color:var(--cream)}
+.cat-overall-left .sub{font-size:0.8rem;color:#777;margin-top:0.3rem}
+.cat-overall-bar-wrap{flex:1;min-width:200px}
+.cat-overall-bar-bg{height:6px;background:#333;border-radius:99px;overflow:hidden;margin-bottom:0.6rem}
+.cat-overall-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-light));border-radius:99px;transition:width 0.8s ease}
+.cat-stats-row{display:flex;gap:2rem;justify-content:flex-end;flex-wrap:wrap}
+.cat-stat{text-align:center}
+.cat-stat .sv{font-size:1.3rem;font-weight:500;color:var(--cream)}
+.cat-stat .sl{font-size:0.65rem;letter-spacing:0.12em;text-transform:uppercase;color:#777;margin-top:0.1rem}
+
+/* NEXT UP CARD */
+.next-up-label{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+.next-up-card{border:2px solid var(--accent-light);border-radius:16px;padding:1.8rem;margin-bottom:2rem;background:var(--card);position:relative;overflow:hidden}
+.next-up-card::before{content:'NEXT UP';position:absolute;top:1.2rem;right:1.5rem;font-size:0.6rem;letter-spacing:0.2em;color:var(--accent-light);font-weight:500}
+.nu-subject{display:inline-block;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:99px;margin-bottom:0.8rem;font-weight:500}
+.nu-vidnum{font-size:0.8rem;color:var(--muted);margin-bottom:0.4rem}
+.nu-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:400;margin-bottom:1.2rem;line-height:1.3}
+.nu-actions{display:flex;gap:0.8rem;flex-wrap:wrap}
+.nu-watch{background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:0.7rem 1.5rem;font-size:0.85rem;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:0.4rem;transition:opacity 0.2s}
+.nu-watch:hover{opacity:0.8}
+.nu-done{background:transparent;border:1px solid var(--border);border-radius:8px;padding:0.7rem 1.5rem;font-size:0.85rem;cursor:pointer;color:var(--muted);transition:all 0.2s}
+.nu-done:hover{border-color:var(--accent);color:var(--accent)}
+
+/* PLAYLIST CARDS */
+.playlists-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem;margin-bottom:2rem}
+.pl-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;transition:border-color 0.2s}
+.pl-card:hover{border-color:var(--accent-light)}
+.pl-subject-badge{display:inline-block;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.3rem 0.8rem;border-radius:99px;margin-bottom:1rem;font-weight:500}
+.pl-name{font-size:0.95rem;font-weight:500;margin-bottom:0.3rem}
+.pl-channel{font-size:0.75rem;color:var(--muted);margin-bottom:1rem}
+.pl-progress-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.4rem}
+.pl-progress-label{font-size:0.75rem;color:var(--muted)}
+.pl-progress-num{font-size:0.75rem;font-weight:500;color:var(--accent)}
+.pl-bar-bg{height:4px;background:var(--border);border-radius:99px;overflow:hidden;margin-bottom:1rem}
+.pl-bar-fill{height:100%;border-radius:99px;transition:width 0.8s ease}
+.pl-cur-label{font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:0.3rem}
+.pl-cur-vid{font-size:0.82rem;color:var(--ink);line-height:1.4}
+.pl-watch-btn{margin-top:1rem;background:none;border:1px solid var(--border);border-radius:6px;padding:0.4rem 1rem;font-size:0.75rem;color:var(--muted);cursor:pointer;width:100%;transition:all 0.2s;text-align:center}
+.pl-watch-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+/* LOG */
+.log-section{background:var(--soft);border-radius:12px;padding:1.5rem;margin-bottom:2rem}
+.log-title{font-size:0.7rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+.log-list{display:flex;flex-direction:column;gap:0.5rem;max-height:200px;overflow-y:auto}
+.log-item{display:flex;gap:0.8rem;align-items:center;font-size:0.82rem}
+.log-dot{width:6px;height:6px;border-radius:50%;background:var(--accent-light);flex-shrink:0}
+.log-text{color:var(--ink);flex:1}
+.log-date{color:var(--muted);font-size:0.75rem;white-space:nowrap}
+.log-empty{font-size:0.85rem;color:var(--muted);font-style:italic}
+
+@media(max-width:768px){
+  .cat-wrap{padding:6rem 1.5rem 3rem}
+  .cat-nav{padding:1rem 1.5rem}
+  .cat-overall{flex-direction:column;gap:1.2rem}
+  .cat-stats-row{justify-content:flex-start}
+}
+</style>
+
+<div class="cat-nav">
+  <div class="nav-logo">SU · CAT 2027</div>
+  <button class="cat-back" onclick="toggleCATPage()">← Back to portfolio</button>
+</div>
+
+<div class="cat-wrap">
+  <div class="cat-hero">
+    <div class="cat-eyebrow">CAT 2027 preparation tracker</div>
+    <h1 class="cat-title">The<br><em>grind</em> begins.</h1>
+    <div class="cat-subtitle">VARC → LRDI → Quant · one video each, every day</div>
+  </div>
+
+  <!-- OVERALL PROGRESS -->
+  <div class="cat-overall">
+    <div class="cat-overall-left">
+      <div class="label">Overall progress</div>
+      <div class="big" id="cat-overall-pct">0%</div>
+      <div class="sub" id="cat-overall-sub">0 of 230 videos done</div>
+    </div>
+    <div class="cat-overall-bar-wrap">
+      <div class="cat-overall-bar-bg">
+        <div class="cat-overall-bar-fill" id="cat-overall-bar" style="width:0%"></div>
+      </div>
+      <div class="cat-stats-row">
+        <div class="cat-stat"><div class="sv" id="cat-done-count">0</div><div class="sl">Done</div></div>
+        <div class="cat-stat"><div class="sv" id="cat-left-count">230</div><div class="sl">Left</div></div>
+        <div class="cat-stat"><div class="sv" id="cat-streak">0</div><div class="sl">Day streak</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEXT UP -->
+  <div class="next-up-label">Watch next</div>
+  <div class="next-up-card" id="next-up-card">
+    <!-- rendered by JS -->
+  </div>
+
+  <!-- PLAYLIST CARDS -->
+  <div class="next-up-label">All playlists</div>
+  <div class="playlists-grid" id="playlists-grid"></div>
+
+  <!-- WATCH LOG -->
+  <div class="log-section">
+    <div class="log-title">Watch log</div>
+    <div class="log-list" id="watch-log"></div>
+  </div>
+</div>
+</div><!-- end #cat-page -->
+
+<script>
+// PASSWORD
+const PASSWORD = '140607';
+const lockInput = document.getElementById('lock-input');
+const dots = document.querySelectorAll('.lock-dot');
+
+lockInput.addEventListener('input', () => {
+  const v = lockInput.value;
+  dots.forEach((d,i) => d.classList.toggle('filled', i < v.length));
+  if(v.length === 6) setTimeout(checkPassword, 200);
+});
+
+function checkPassword(){
+  if(lockInput.value === PASSWORD){
+    document.getElementById('lock-screen').classList.add('hide');
+    setTimeout(() => {
+      document.getElementById('lock-screen').style.display = 'none';
+      const m = document.getElementById('main');
+      m.style.display = 'block';
+      setTimeout(() => m.classList.add('show'), 10);
+      initAll();
+    }, 600);
+  } else {
+    document.getElementById('lock-error').classList.add('show');
+    lockInput.value = '';
+    dots.forEach(d => d.classList.remove('filled'));
+    setTimeout(() => document.getElementById('lock-error').classList.remove('show'), 2000);
+  }
+}
+
+lockInput.addEventListener('keydown', e => { if(e.key==='Enter') checkPassword(); });
+
+// CLOCK
+function updateClock(){
+  const now = new Date();
+  const t = now.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+  const d = now.toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  document.getElementById('clock').textContent = t;
+  document.getElementById('date-display').textContent = d;
+  document.getElementById('footer-time').textContent = t;
+}
+
+// TYPING
+const phrases = ['building robots','learning NLP','exploring AI','chasing curiosity','travelling the world'];
+let phraseIdx=0,charIdx=0,deleting=false;
+function typeNext(){
+  const el = document.getElementById('typing-text');
+  const phrase = phrases[phraseIdx];
+  if(!deleting){
+    el.textContent = phrase.slice(0,++charIdx);
+    if(charIdx===phrase.length){ deleting=true; setTimeout(typeNext,1800); return; }
+  } else {
+    el.textContent = phrase.slice(0,--charIdx);
+    if(charIdx===0){ deleting=false; phraseIdx=(phraseIdx+1)%phrases.length; setTimeout(typeNext,300); return; }
+  }
+  setTimeout(typeNext, deleting?60:100);
+}
+
+// QUOTE
+const quotes = [
+  {text:"The cosmos is within us. We are made of star-stuff.",author:"Carl Sagan"},
+  {text:"Creativity is intelligence having fun.",author:"Albert Einstein"},
+  {text:"She is clothed in strength and dignity, and she laughs without fear of the future.",author:"Proverbs 31:25"},
+  {text:"Not all those who wander are lost.",author:"J.R.R. Tolkien"},
+  {text:"The only way to do great work is to love what you do.",author:"Steve Jobs"},
+  {text:"Dance is the hidden language of the soul.",author:"Martha Graham"},
+  {text:"In the middle of every difficulty lies opportunity.",author:"Albert Einstein"},
+  {text:"She believed she could, so she did.",author:"R.S. Grey"},
+  {text:"The future belongs to those who learn more skills and combine them in creative ways.",author:"Robert Greene"},
+  {text:"Wherever you go, go with all your heart.",author:"Confucius"},
+  {text:"Wherever you go, go with all your heart.",author:"Confucius"},
+  {text:"The journey of a thousand miles begins with a single step.",author:"Lao Tzu"},
+  {text:"Build things that matter. Solve things that hurt.",author:"Unknown"},
+  {text:"Art and science are not at war. They are two languages for the same truth.",author:"Unknown"},
+  {text:"Do it with passion or not at all.",author:"Rosa Nouchette Carey"}
+];
+function fetchQuote(){
+  const today = new Date().toDateString();
+  const saved = JSON.parse(localStorage.getItem('su_daily_quote')||'{}');
+  let idx;
+  if(saved.date===today && saved.idx!==undefined){
+    idx = saved.idx;
+  } else {
+    idx = Math.floor(Math.random()*quotes.length);
+    localStorage.setItem('su_daily_quote', JSON.stringify({date:today, idx}));
+  }
+  const q = quotes[idx];
+  document.getElementById('quote-text').textContent = `"${q.text}"`;
+  document.getElementById('quote-author').textContent = `— ${q.author}`;
+}
+
+// SKILLS
+const skills = [
+  {cat:'Programming',name:'Python',level:75},
+  {cat:'Programming',name:'C / C++',level:65},
+  {cat:'Programming',name:'MATLAB',level:60},
+  {cat:'AI & NLP',name:'Machine Learning basics',level:55},
+  {cat:'AI & NLP',name:'Natural Language Processing',level:50},
+  {cat:'Hardware',name:'Arduino & Microcontrollers',level:80},
+  {cat:'Hardware',name:'Sensors & Actuators',level:75},
+  {cat:'Design & Simulation',name:'AutoCAD',level:70},
+  {cat:'Design & Simulation',name:'SolidWorks',level:60},
+  {cat:'Robotics',name:'ROS (basics)',level:45},
+  {cat:'Robotics',name:'Kinematics & Dynamics',level:70},
+  {cat:'Web',name:'HTML / CSS / JS',level:60},
+];
+function renderSkills(){
+  const g = document.getElementById('skills-grid');
+  g.innerHTML = skills.map(s=>`
+    <div class="skill-card">
+      <div class="skill-cat">${s.cat}</div>
+      <div class="skill-name">${s.name}</div>
+      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:0%" data-w="${s.level}%"></div></div>
+    </div>`).join('');
+  setTimeout(()=>{
+    document.querySelectorAll('.skill-bar-fill').forEach(el=>{ el.style.width=el.dataset.w; });
+  },300);
+}
+
+// TODO
+let todos = JSON.parse(localStorage.getItem('su_todos')||'[]');
+function saveTodos(){ localStorage.setItem('su_todos',JSON.stringify(todos)); }
+function renderTodos(){
+  const el = document.getElementById('todo-list');
+  if(todos.length===0){ el.innerHTML='<div style="font-size:0.82rem;color:var(--muted);padding:0.5rem">No tasks yet. Add one above!</div>'; return; }
+  el.innerHTML = todos.map((t,i)=>`
+    <div class="todo-item">
+      <input type="checkbox" ${t.done?'checked':''} onchange="toggleTodo(${i})"/>
+      <span class="${t.done?'done':''}">${t.text}</span>
+      <button class="todo-del" onclick="deleteTodo(${i})">×</button>
+    </div>`).join('');
+}
+function addTodo(){
+  const inp = document.getElementById('todo-input');
+  if(!inp.value.trim()) return;
+  todos.unshift({text:inp.value.trim(),done:false});
+  inp.value=''; saveTodos(); renderTodos();
+}
+function toggleTodo(i){ todos[i].done=!todos[i].done; saveTodos(); renderTodos(); }
+function deleteTodo(i){ todos.splice(i,1); saveTodos(); renderTodos(); }
+
+
+// HABITS
+const habitDefs = ['Study','Hydrate','Exercise','Dance','Code','Travel'];
+let habits = JSON.parse(localStorage.getItem('su_habits_'+new Date().toDateString())||'{}');
+function renderHabits(){
+  document.getElementById('habit-grid').innerHTML = habitDefs.map(h=>`
+    <div class="habit-item ${habits[h]?'done':''}" onclick="toggleHabit('${h}')">
+      <span class="habit-emoji">${{Study:'📚',Hydrate:'💧',Exercise:'🏃',Dance:'💃',Code:'💻',Travel:'✈️'}[h]}</span>
+      ${h}
+    </div>`).join('');
+}
+function toggleHabit(h){
+  habits[h]=!habits[h];
+  localStorage.setItem('su_habits_'+new Date().toDateString(),JSON.stringify(habits));
+  renderHabits();
+}
+
+// LINKS
+const links = [
+  {platform:'LinkedIn',handle:'soumya-upreti',url:'https://www.linkedin.com/in/soumya-upreti-9138b9304',icon:'in',bg:'#0077B5',copy:'www.linkedin.com/in/soumya-upreti-9138b9304'},
+  {platform:'GitHub',handle:'soumyaupreti',url:'https://github.com/soumyaupreti',icon:'gh',bg:'#333',copy:'github.com/soumyaupreti'},
+  {platform:'Instagram',handle:'soumyaupretii',url:'https://instagram.com/soumyaupretii',icon:'ig',bg:'#E1306C',copy:'instagram.com/soumyaupretii'},
+  {platform:'Personal Gmail',handle:'soumyaupreti7@gmail.com',url:'mailto:soumyaupreti7@gmail.com',icon:'gm',bg:'#EA4335',copy:'soumyaupreti7@gmail.com'},
+  {platform:'College Email',handle:'soumya.4719052024@std.ggsipu.ac.in',url:'mailto:soumya.4719052024@std.ggsipu.ac.in',icon:'ce',bg:'#8B6F47',copy:'soumya.4719052024@std.ggsipu.ac.in'},
+  {platform:'Work Email',handle:'soumyaupretiwork@gmail.com',url:'mailto:soumyaupretiwork@gmail.com',icon:'we',bg:'#34A853',copy:'soumyaupretiwork@gmail.com'},
+];
+function renderLinks(){
+  document.getElementById('links-grid').innerHTML = links.map((l,i)=>`
+    <a href="${l.url}" target="_blank" class="link-card">
+      <div class="link-icon" style="background:${l.bg};color:white;font-size:0.8rem;font-weight:600">${l.icon.toUpperCase()}</div>
+      <div class="link-info">
+        <div class="link-platform">${l.platform}</div>
+        <div class="link-handle">${l.handle}</div>
+      </div>
+      <button class="copy-btn" onclick="event.preventDefault();copyLink(${i})">Copy</button>
+    </a>`).join('');
+}
+function copyLink(i){
+  navigator.clipboard.writeText(links[i].copy).then(()=>alert('Copied!'));
+}
+
+// BLOG
+let blogs = JSON.parse(localStorage.getItem('su_blogs')||JSON.stringify([
+  {date:'May 2025',title:'Why I love the intersection of art and engineering',excerpt:'Classical dance taught me timing, precision, and flow — the same things robotics demands. I never thought movement would make me a better engineer.'},
+  {date:'April 2025',title:'What I learned building my first Arduino project',excerpt:'The Hall Effect sensor project taught me that hardware is just software you can touch. And that soldering irons are unforgiving.'},
+]));
+function renderBlogs(){
+  document.getElementById('blog-grid').innerHTML = blogs.map(b=>`
+    <div class="blog-card">
+      <div class="blog-date">${b.date}</div>
+      <div class="blog-title">${b.title}</div>
+      <div class="blog-excerpt">${b.excerpt}</div>
+    </div>`).join('');
+}
+function newBlogPost(){
+  const title = prompt('Title of your thought:');
+  if(!title) return;
+  const excerpt = prompt('Write a short excerpt:');
+  if(!excerpt) return;
+  const now = new Date().toLocaleDateString('en-IN',{month:'long',year:'numeric'});
+  blogs.unshift({date:now,title,excerpt});
+  localStorage.setItem('su_blogs',JSON.stringify(blogs));
+  renderBlogs();
+}
+
+// AI CHAT
+const SYSTEM_PROMPT = `You are Soumya's AI assistant embedded in her personal portfolio. You speak warmly and knowledgeably about Soumya Upreti. Here are the facts about her:
+- Full name: Soumya Upreti
+- 2nd year B.Tech student in Automation & Robotics at USAR (University School of Automation & Robotics), GGSIPU, Delhi
+- Skills: Python, C/C++, MATLAB, Arduino, machine learning basics, NLP, AutoCAD, SolidWorks, ROS basics, kinematics & dynamics, HTML/CSS/JS
+- Hobbies: classical dancer, travelling
+- Based in Delhi, India
+- Contact: soumyaupreti7@gmail.com (personal), soumyaupretiwork@gmail.com (work)
+- LinkedIn: linkedin.com/in/soumya-upreti-9138b9304
+- GitHub: github.com/soumyaupreti
+- Instagram: soumyaupretii
+Answer questions about Soumya in a friendly, first-person-adjacent way (as if speaking on her behalf). Keep responses concise and warm. If asked something you don't know about her, say you're not sure but invite them to reach out directly.`;
+
+async function sendChat(){
+  const inp = document.getElementById('chat-input');
+  const msg = inp.value.trim();
+  if(!msg) return;
+  inp.value='';
+  const msgs = document.getElementById('chat-messages');
+  msgs.innerHTML += `<div class="msg user">${msg}</div>`;
+  msgs.innerHTML += `<div class="msg bot loading" id="chat-loading">Thinking...</div>`;
+  msgs.scrollTop = msgs.scrollHeight;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system:SYSTEM_PROMPT,
+        messages:[{role:'user',content:msg}]
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.find(b=>b.type==='text')?.text || 'Sorry, I couldn\'t process that.';
+    document.getElementById('chat-loading').remove();
+    msgs.innerHTML += `<div class="msg bot">${reply}</div>`;
+  } catch(e) {
+    document.getElementById('chat-loading').textContent = 'Error — please try again.';
+  }
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// INIT ALL
+function initAll(){
+  updateClock();
+  setInterval(updateClock, 1000);
+  typeNext();
+  fetchQuote();
+  renderSkills();
+  renderTodos();
+  renderHabits();
+  renderLinks();
+  renderBlogs();
+  renderCalendar();
+}
+
+// ── CALENDAR ──────────────────────────────────────────────────────
+const TYPE_COLORS = {exam:'#E24B4A',holiday:'#1D9E75',important:'#EF9F27',cat:'#185FA5',personal:'#8B6F47'};
+const TYPE_LABELS = {exam:'📝 Exam',holiday:'🌴 Holiday',important:'⭐ Important',cat:'📚 CAT study',personal:'💃 Personal'};
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+let calSelected = null;
+let calData = JSON.parse(localStorage.getItem('su_cal')||'{}');
+
+function calKey(y,m,d){ return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
+
+function renderCalendar(){
+  const firstDay = new Date(calYear, calMonth, 1).getDay();
+  const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+  const daysInPrev = new Date(calYear, calMonth, 0).getDate();
+  const today = new Date();
+  const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  document.getElementById('cal-month-title').textContent = `${monthNames[calMonth]} ${calYear}`;
+  const grid = document.getElementById('cal-grid');
+  let html = '';
+  for(let i=0;i<firstDay;i++){
+    const d = daysInPrev - firstDay + 1 + i;
+    html += `<div class="cal-day other-month"><span class="cal-day-num">${d}</span></div>`;
+  }
+  for(let d=1;d<=daysInMonth;d++){
+    const key = calKey(calYear,calMonth,d);
+    const entry = calData[key];
+    const isToday = d===today.getDate()&&calMonth===today.getMonth()&&calYear===today.getFullYear();
+    const isSel = calSelected===key;
+    const dot = entry?.type ? `<div class="cal-day-dot" style="background:${TYPE_COLORS[entry.type]}"></div>` : '<div class="cal-day-dot" style="background:transparent"></div>';
+    html += `<div class="cal-day${isToday?' today':''}${isSel?' selected':''}" onclick="selectDay(${calYear},${calMonth},${d})">
+      <span class="cal-day-num">${d}</span>${dot}
+    </div>`;
+  }
+  const cells = firstDay + daysInMonth;
+  const remaining = cells % 7 === 0 ? 0 : 7 - (cells%7);
+  for(let d=1;d<=remaining;d++){
+    html += `<div class="cal-day other-month"><span class="cal-day-num">${d}</span></div>`;
+  }
+  grid.innerHTML = html;
+  renderUpcoming();
+}
+
+function selectDay(y,m,d){
+  calSelected = calKey(y,m,d);
+  const entry = calData[calSelected];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const dayName = days[new Date(y,m,d).getDay()];
+  document.getElementById('cal-sel-date').textContent = `${dayName}, ${d} ${months[m]} ${y}`;
+  const noteEl = document.getElementById('cal-sel-note');
+  if(entry){
+    noteEl.innerHTML = `<span style="display:inline-flex;align-items:center;gap:4px;background:${TYPE_COLORS[entry.type]}18;color:${TYPE_COLORS[entry.type]};padding:2px 8px;border-radius:99px;font-size:0.75rem">${TYPE_LABELS[entry.type]||''}</span>${entry.note?`<span style="display:block;margin-top:0.4rem;font-size:0.82rem;color:var(--muted)">${entry.note}</span>`:''}`;
+    document.getElementById('cal-note-input').value = entry.note || '';
+  } else {
+    noteEl.innerHTML = '<span style="font-size:0.8rem;color:var(--muted)">No event marked</span>';
+    document.getElementById('cal-note-input').value = '';
+  }
+  document.getElementById('cal-mark-options').style.display = 'block';
+  renderCalendar();
+}
+
+function markDate(type){
+  if(!calSelected) return;
+  if(type==='clear'){ delete calData[calSelected]; }
+  else { calData[calSelected] = {...(calData[calSelected]||{}), type}; }
+  localStorage.setItem('su_cal',JSON.stringify(calData));
+  selectDay(...calSelected.split('-').map((v,i)=>i===1?parseInt(v)-1:parseInt(v)));
+  renderCalendar();
+}
+
+function saveNote(){
+  if(!calSelected) return;
+  const note = document.getElementById('cal-note-input').value.trim();
+  if(!calData[calSelected]) calData[calSelected] = {};
+  calData[calSelected].note = note;
+  localStorage.setItem('su_cal',JSON.stringify(calData));
+  selectDay(...calSelected.split('-').map((v,i)=>i===1?parseInt(v)-1:parseInt(v)));
+}
+
+function changeMonth(dir){
+  calMonth += dir;
+  if(calMonth > 11){ calMonth=0; calYear++; }
+  if(calMonth < 0){ calMonth=11; calYear--; }
+  calSelected = null;
+  document.getElementById('cal-mark-options').style.display='none';
+  document.getElementById('cal-sel-date').textContent='Select a date';
+  document.getElementById('cal-sel-note').innerHTML='';
+  renderCalendar();
+}
+
+function renderUpcoming(){
+  const today = new Date();
+  const upcoming = Object.entries(calData)
+    .filter(([k,v])=>v.type && new Date(k)>=today)
+    .sort(([a],[b])=>new Date(a)-new Date(b))
+    .slice(0,5);
+  const el = document.getElementById('cal-upcoming');
+  if(!el) return;
+  if(upcoming.length===0){ el.innerHTML='<div class="cal-upcoming-title">Upcoming events</div><div style="font-size:0.82rem;color:var(--muted);font-style:italic">No upcoming events</div>'; return; }
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  el.innerHTML = '<div class="cal-upcoming-title">Upcoming events</div>' + upcoming.map(([k,v])=>{
+    const d=new Date(k);
+    return `<div class="cal-up-item"><span class="cal-up-date" style="color:${TYPE_COLORS[v.type]}">${d.getDate()} ${months[d.getMonth()]}</span><span class="cal-up-text">${TYPE_LABELS[v.type]||''}${v.note?' · '+v.note:''}</span></div>`;
+  }).join('');
+}
+
+// ── ASSIGNMENT SOLVER ─────────────────────────────────────────────
+let selectedStyle = 'auto';
+function selectStyle(btn){
+  document.querySelectorAll('.asgn-style-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedStyle = btn.dataset.style;
+}
+
+async function solveAssignment(){
+  const question = document.getElementById('asgn-question').value.trim();
+  if(!question){ alert('Please enter a question first.'); return; }
+  const subject = document.getElementById('asgn-subject').value.trim();
+  const marks = document.getElementById('asgn-marks').value.trim();
+  const btn = document.getElementById('asgn-submit');
+  const outputWrap = document.getElementById('asgn-output-wrap');
+  const answerEl = document.getElementById('asgn-answer');
+
+  btn.disabled = true;
+  btn.textContent = 'Generating...';
+  outputWrap.style.display = 'block';
+  answerEl.innerHTML = '<span class="asgn-thinking">Writing your answer...</span>';
+
+  const styleInstructions = {
+    auto: `Detect the best format based on the question type. Use structured headings for theory/long questions, paragraphs for analytical ones, numbered points for list-based questions, and short crisp answers for short/definition questions.`,
+    structured: `Use clear headings and subheadings. Organize content logically with sections.`,
+    paragraph: `Write in flowing academic paragraphs. No bullet points.`,
+    points: `Use numbered or bulleted points. Clear, concise, each point self-contained.`,
+    short: `Give a concise short answer. 3-6 sentences max. Direct and to the point.`
+  };
+
+  const systemPrompt = `You are an expert academic assignment writer helping a B.Tech student (Automation & Robotics, GGSIPU Delhi) write assignment answers.
+
+Rules:
+- Write answers that sound like a well-prepared, intelligent student wrote them — not like an AI
+- Use natural academic language, not overly formal or robotic
+- ${styleInstructions[selectedStyle]}
+- If marks/word limit are given, calibrate answer length accordingly (5 marks ≈ 200-300 words, 10 marks ≈ 400-600 words)
+- For technical/engineering questions: include relevant concepts, formulas if needed, and real-world context
+- For management/MBA questions: include theory, examples, and practical implications
+- Start directly with the answer — no preamble like "Here is the answer:"
+- Use markdown formatting: **bold** for key terms, ## for main headings, ### for subheadings
+
+MATHEMATICAL FORMATTING — follow these strictly:
+- Write fractions as: 1/2, 3/4, 22/7 (always use / between numerator and denominator with no spaces)
+- Write powers as: x^2, n^3, a^(n-1)
+- Write square root as: sqrt(x)
+- Write multiplication clearly: 2 × 3 or 2*3, never ambiguous
+- For equations, write each step on a new line
+- Always show step-by-step working for numerical problems
+- Never use LaTeX or dollar signs like $x$ or \\frac{}{}
+- Example fraction: efficiency = output/input = 150/200 = 3/4 = 0.75
+
+- End with a concise concluding line if it's a long answer`;
+
+  let userPrompt = `Question: ${question}`;
+  if(subject) userPrompt += `\nSubject/Context: ${subject}`;
+  if(marks) userPrompt += `\nMarks/Length: ${marks}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:1000,
+        system: systemPrompt,
+        messages:[{role:'user', content: userPrompt}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.find(b=>b.type==='text')?.text || 'Could not generate answer.';
+    answerEl.innerHTML = formatAnswer(text);
+  } catch(e){
+    answerEl.innerHTML = '<span style="color:#c0392b">Error generating answer. Please try again.</span>';
+  }
+  btn.disabled = false;
+  btn.textContent = 'Generate answer ↗';
+}
+
+function formatAnswer(text){
+  // Convert fractions like 1/2, 3/4 etc to proper display
+  text = text.replace(/\b(\d+)\/(\d+)\b/g, '<span class="frac"><sup>$1</sup><span>/</span><sub>$2</sub></span>');
+  // Convert powers like x^2, n^3
+  text = text.replace(/\b([a-zA-Z0-9]+)\^(\d+)\b/g, '$1<sup>$2</sup>');
+  // Convert sqrt()
+  text = text.replace(/sqrt\(([^)]+)\)/g, '√($1)');
+  // Bold key terms
+  text = text.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  text = text.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  // Headings
+  text = text.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+  text = text.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+  // Line breaks
+  text = text.replace(/\n/g, '<br>');
+  return text;
+}
+
+function copyAnswer(){
+  const text = document.getElementById('asgn-answer').innerText;
+  navigator.clipboard.writeText(text).then(()=>alert('Answer copied!'));
+}
+
+function clearAnswer(){
+  document.getElementById('asgn-question').value='';
+  document.getElementById('asgn-subject').value='';
+  document.getElementById('asgn-marks').value='';
+  document.getElementById('asgn-output-wrap').style.display='none';
+  document.getElementById('asgn-answer').innerHTML='';
+}
+
+// ── CAT 2027 TRACKER ──────────────────────────────────────────────
+const PLAYLISTS = [
+  {
+    id:'varc',
+    name:'VARC Complete Course',
+    channel:'Cracku',
+    subject:'VARC',
+    color:'#8B6F47',
+    colorLight:'#C4A882',
+    total:21,
+    startFrom:15,
+    url:'https://youtube.com/playlist?list=PLSjkMEhzZ_icihE5IwlFH_ETUuzoLs1lh',
+  },
+  {
+    id:'lrdi',
+    name:'LRDI Complete Course',
+    channel:'CAT Prep',
+    subject:'LRDI',
+    color:'#1D9E75',
+    colorLight:'#5DCAA5',
+    total:78,
+    startFrom:19,
+    url:'https://youtube.com/playlist?list=PL66qMJTd-VefmFgmCEbgB6mR6tTrVNYXu',
+  },
+  {
+    id:'quant',
+    name:'Quant Complete Course',
+    channel:'CAT Prep',
+    subject:'Quant',
+    color:'#185FA5',
+    colorLight:'#378ADD',
+    total:131,
+    startFrom:16,
+    url:'https://youtube.com/playlist?list=PLG4bwc5fquzj0Rkn0DVWZP9FxF9iG7OgB',
+  }
+];
+
+// order of rotation: VARC → LRDI → Quant
+const ORDER = ['varc','lrdi','quant'];
+const TOTAL_VIDS = PLAYLISTS.reduce((s,p)=>s+(p.total-p.startFrom+1),0);
+
+function loadCATState(){
+  const def = {};
+  PLAYLISTS.forEach(p=>{ def[p.id] = p.startFrom - 1; }); // current = startFrom-1 means next to watch is startFrom
+  const saved = localStorage.getItem('su_cat_state');
+  return saved ? JSON.parse(saved) : { progress: def, nextSubject: 'varc', log: [], streak: 0, lastDate: null };
+}
+function saveCATState(s){ localStorage.setItem('su_cat_state',JSON.stringify(s)); }
+
+let catState = loadCATState();
+
+function getCATPlaylist(id){ return PLAYLISTS.find(p=>p.id===id); }
+
+function totalDone(){
+  return PLAYLISTS.reduce((s,p)=>{
+    const done = Math.max(0, catState.progress[p.id] - (p.startFrom-1));
+    return s + done;
+  },0);
+}
+
+function getNextVid(id){
+  const p = getCATPlaylist(id);
+  const cur = catState.progress[id]; // last watched (0 if none)
+  const next = cur === 0 ? p.startFrom : cur + 1;
+  return Math.min(next, p.total);
+}
+
+function vidUrl(pl, vidNum){
+  // YouTube playlist video by index — open playlist and it'll be at that position
+  return `${pl.url}&index=${vidNum}`;
+}
+
+function renderCATAll(){
+  renderCATOverall();
+  renderNextUp();
+  renderPlaylistCards();
+  renderLog();
+}
+
+function renderCATOverall(){
+  const done = totalDone();
+  const pct = Math.round((done/TOTAL_VIDS)*100);
+  document.getElementById('cat-overall-pct').textContent = pct+'%';
+  document.getElementById('cat-overall-sub').textContent = `${done} of ${TOTAL_VIDS} videos done`;
+  document.getElementById('cat-overall-bar').style.width = pct+'%';
+  document.getElementById('cat-done-count').textContent = done;
+  document.getElementById('cat-left-count').textContent = TOTAL_VIDS - done;
+  document.getElementById('cat-streak').textContent = catState.streak || 0;
+}
+
+function renderNextUp(){
+  const id = catState.nextSubject || 'varc';
+  const pl = getCATPlaylist(id);
+  const vidNum = getNextVid(id);
+  const isLast = vidNum >= pl.total;
+  const card = document.getElementById('next-up-card');
+  card.innerHTML = `
+    <span class="nu-subject" style="background:${pl.color}20;color:${pl.color}">${pl.subject}</span>
+    <div class="nu-vidnum">Video ${vidNum} of ${pl.total} · ${pl.name}</div>
+    <div class="nu-title">Video #${vidNum} — ${pl.channel}</div>
+    <div class="nu-actions">
+      <a class="nu-watch" href="${vidUrl(pl,vidNum)}" target="_blank">▶ Watch on YouTube</a>
+      <button class="nu-done" onclick="markDone('${id}',${vidNum})">✓ Mark as done</button>
+    </div>
+    ${isLast ? '<div style="margin-top:0.8rem;font-size:0.8rem;color:var(--accent)">🎉 Last video in this playlist!</div>' : ''}
+  `;
+}
+
+function renderPlaylistCards(){
+  const grid = document.getElementById('playlists-grid');
+  grid.innerHTML = PLAYLISTS.map(pl=>{
+    const done = Math.max(0, catState.progress[pl.id] - (pl.startFrom-1));
+    const total = pl.total - pl.startFrom + 1;
+    const pct = Math.round((done/total)*100);
+    const nextVid = getNextVid(pl.id);
+    const isActive = catState.nextSubject === pl.id;
+    return `
+    <div class="pl-card" style="${isActive?'border-color:'+pl.color+';border-width:1.5px':''}">
+      <span class="pl-subject-badge" style="background:${pl.color}18;color:${pl.color}">${pl.subject}${isActive?' · up next':''}</span>
+      <div class="pl-name">${pl.name}</div>
+      <div class="pl-channel">${pl.channel} · ${pl.total} videos</div>
+      <div class="pl-progress-row">
+        <span class="pl-progress-label">${done} / ${total} done</span>
+        <span class="pl-progress-num">${pct}%</span>
+      </div>
+      <div class="pl-bar-bg"><div class="pl-bar-fill" style="width:${pct}%;background:${pl.color}"></div></div>
+      <div class="pl-cur-label">Current</div>
+      <div class="pl-cur-vid">Video ${nextVid <= pl.total ? nextVid : pl.total} of ${pl.total}</div>
+      <button class="pl-watch-btn" onclick="window.open('${vidUrl(pl,nextVid)}','_blank')">▶ Open playlist</button>
+    </div>`;
+  }).join('');
+}
+
+function renderLog(){
+  const logEl = document.getElementById('watch-log');
+  if(!catState.log || catState.log.length===0){
+    logEl.innerHTML='<div class="log-empty">No videos watched yet. Start today!</div>';
+    return;
+  }
+  logEl.innerHTML = [...catState.log].reverse().slice(0,20).map(l=>`
+    <div class="log-item">
+      <div class="log-dot" style="background:${getCATPlaylist(l.id)?.color||'#888'}"></div>
+      <div class="log-text">${l.subject} · Video ${l.vidNum}</div>
+      <div class="log-date">${l.date}</div>
+    </div>`).join('');
+}
+
+function markDone(id, vidNum){
+  const pl = getCATPlaylist(id);
+  if(vidNum >= pl.total){
+    alert(`You've completed the entire ${pl.subject} playlist! Amazing work!`);
+    return;
+  }
+  // update progress
+  catState.progress[id] = vidNum;
+  // log it
+  if(!catState.log) catState.log = [];
+  catState.log.push({
+    id, vidNum, subject: pl.subject,
+    date: new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short'})
+  });
+  // update streak
+  const today = new Date().toDateString();
+  if(catState.lastDate !== today){
+    const yesterday = new Date(Date.now()-86400000).toDateString();
+    catState.streak = catState.lastDate === yesterday ? (catState.streak||0)+1 : 1;
+    catState.lastDate = today;
+  }
+  // advance to next subject in rotation
+  const curIdx = ORDER.indexOf(id);
+  catState.nextSubject = ORDER[(curIdx+1)%ORDER.length];
+  saveCATState(catState);
+  renderCATAll();
+}
+
+// PAGE TOGGLE
+function toggleCATPage(){
+  const main = document.getElementById('main');
+  const cat = document.getElementById('cat-page');
+  const isShowingCAT = cat.style.display === 'block';
+  if(isShowingCAT){
+    cat.style.opacity='0';
+    setTimeout(()=>{ cat.style.display='none'; main.style.display='block'; setTimeout(()=>main.style.opacity='1',10); },400);
+  } else {
+    main.style.opacity='0';
+    setTimeout(()=>{ main.style.display='none'; cat.style.display='block'; setTimeout(()=>{ cat.style.opacity='1'; renderCATAll(); },10); },400);
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+</script>
+</body>
+</html>
