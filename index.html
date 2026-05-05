@@ -19,25 +19,8 @@
 }
 body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;overflow-x:hidden}
 
-/* PASSWORD SCREEN */
-#lock-screen{position:fixed;inset:0;background:var(--ink);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity 0.6s ease}
-#lock-screen.hide{opacity:0;pointer-events:none}
-.lock-name{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,6vw,4rem);color:var(--cream);font-weight:300;letter-spacing:0.08em;margin-bottom:0.5rem}
-.lock-sub{color:#888;font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:3rem}
-.lock-input-wrap{position:relative;margin-bottom:1rem}
-#lock-input{background:transparent;border:none;border-bottom:1px solid #444;color:var(--cream);font-size:1.5rem;letter-spacing:0.4em;width:160px;text-align:center;padding:0.5rem 0;outline:none;font-family:'DM Sans',sans-serif}
-#lock-input::placeholder{color:#444;letter-spacing:0.2em;font-size:1rem}
-.lock-btn{background:transparent;border:1px solid #555;color:var(--cream);padding:0.7rem 2.5rem;font-size:0.85rem;letter-spacing:0.15em;text-transform:uppercase;cursor:pointer;transition:all 0.2s;margin-top:1rem}
-.lock-btn:hover{background:var(--cream);color:var(--ink)}
-.lock-error{color:#c0392b;font-size:0.8rem;margin-top:0.5rem;opacity:0;transition:opacity 0.2s;text-align:center}
-.lock-error.show{opacity:1}
-.lock-dots{display:flex;gap:8px;margin-bottom:1.5rem}
-.lock-dot{width:8px;height:8px;border-radius:50%;background:#333;transition:background 0.2s}
-.lock-dot.filled{background:var(--accent-light)}
-
 /* MAIN CONTENT */
-#main{opacity:0;transition:opacity 0.6s ease;display:none}
-#main.show{opacity:1;display:block}
+#main{opacity:1;display:block}
 
 /* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:flex;justify-content:space-between;align-items:center;background:rgba(250,248,244,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
@@ -135,23 +118,6 @@ section:first-of-type{padding-top:8rem}
 .blog-excerpt{font-size:0.85rem;color:var(--muted);line-height:1.6}
 .blog-new-btn{background:transparent;border:1px solid var(--border);border-radius:8px;padding:0.7rem 1.5rem;font-size:0.8rem;letter-spacing:0.1em;cursor:pointer;color:var(--muted);transition:all 0.2s;margin-top:1.2rem}
 .blog-new-btn:hover{border-color:var(--accent);color:var(--accent)}
-
-/* AI CHAT */
-.chat-container{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden}
-.chat-header{background:var(--ink);color:var(--cream);padding:1rem 1.5rem;display:flex;align-items:center;gap:0.8rem}
-.chat-avatar{width:32px;height:32px;border-radius:50%;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:500}
-.chat-name{font-size:0.9rem;font-weight:500}
-.chat-status{font-size:0.72rem;color:#888}
-.chat-messages{height:300px;overflow-y:auto;padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem}
-.msg{max-width:75%;padding:0.7rem 1rem;border-radius:12px;font-size:0.88rem;line-height:1.5}
-.msg.bot{background:var(--soft);border-radius:4px 12px 12px 12px;align-self:flex-start}
-.msg.user{background:var(--ink);color:var(--cream);border-radius:12px 4px 12px 12px;align-self:flex-end}
-.msg.loading{color:var(--muted);font-style:italic}
-.chat-input-row{display:flex;gap:0.5rem;padding:1rem 1.2rem;border-top:1px solid var(--border)}
-.chat-input-row input{flex:1;border:1px solid var(--border);border-radius:8px;padding:0.6rem 1rem;font-size:0.88rem;font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--ink);outline:none}
-.chat-input-row input:focus{border-color:var(--accent-light)}
-.chat-send{background:var(--ink);color:var(--cream);border:none;border-radius:8px;padding:0.6rem 1.2rem;font-size:0.85rem;cursor:pointer;transition:opacity 0.2s}
-.chat-send:hover{opacity:0.8}
 
 /* CONTACT */
 .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start}
@@ -258,24 +224,9 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
 </head>
 <body>
 
-<!-- LOCK SCREEN -->
-<div id="lock-screen">
-  <div class="lock-name fade-up">Soumya Upreti</div>
-  <div class="lock-sub delay-1 fade-up">Private space — enter password</div>
-  <div class="lock-dots" id="lock-dots">
-    <div class="lock-dot"></div><div class="lock-dot"></div>
-    <div class="lock-dot"></div><div class="lock-dot"></div>
-    <div class="lock-dot"></div><div class="lock-dot"></div>
-  </div>
-  <div class="lock-input-wrap">
-    <input type="password" id="lock-input" placeholder="••••••" maxlength="6" autocomplete="off"/>
-  </div>
-  <button class="lock-btn" onclick="checkPassword()">Enter</button>
-  <div class="lock-error" id="lock-error">Incorrect password. Try again.</div>
-</div>
 
 <!-- MAIN PAGE -->
-<div id="main">
+<div id="main" style="opacity:1;display:block">
 
 <nav>
   <div class="nav-logo">SU</div>
@@ -286,7 +237,6 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
     <a href="#calendar">Calendar</a>
     <a href="#links">Links</a>
     <a href="#assignment" onclick="document.getElementById('assignment').scrollIntoView({behavior:'smooth'});return false;">Assignment</a>
-    <a href="#chat">Chat</a>
     <a href="#contact">Contact</a>
     <a href="#" onclick="toggleCATPage();return false;" style="color:var(--accent);font-weight:500">CAT 2027</a>
   </div>
@@ -511,30 +461,6 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
 
 <hr class="divider"/>
 
-<!-- AI CHAT -->
-<section id="chat">
-  <div class="section-label">AI assistant</div>
-  <div class="section-title">Talk to<br><em style="font-style:italic;color:var(--accent)">Soumya's AI</em></div>
-  <div class="chat-container">
-    <div class="chat-header">
-      <div class="chat-avatar">SU</div>
-      <div>
-        <div class="chat-name">Soumya's AI</div>
-        <div class="chat-status">Ask me anything about Soumya</div>
-      </div>
-    </div>
-    <div class="chat-messages" id="chat-messages">
-      <div class="msg bot">Hi! I'm Soumya's AI. Ask me anything about her — her projects, skills, interests, or anything else you're curious about!</div>
-    </div>
-    <div class="chat-input-row">
-      <input type="text" id="chat-input" placeholder="Ask something about Soumya..." onkeydown="if(event.key==='Enter')sendChat()"/>
-      <button class="chat-send" onclick="sendChat()">Send</button>
-    </div>
-  </div>
-</section>
-
-<hr class="divider"/>
-
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-label">Get in touch</div>
@@ -687,36 +613,8 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
 </div><!-- end #cat-page -->
 
 <script>
-// PASSWORD
-const PASSWORD = '140607';
-const lockInput = document.getElementById('lock-input');
-const dots = document.querySelectorAll('.lock-dot');
-
-lockInput.addEventListener('input', () => {
-  const v = lockInput.value;
-  dots.forEach((d,i) => d.classList.toggle('filled', i < v.length));
-  if(v.length === 6) setTimeout(checkPassword, 200);
-});
-
-function checkPassword(){
-  if(lockInput.value === PASSWORD){
-    document.getElementById('lock-screen').classList.add('hide');
-    setTimeout(() => {
-      document.getElementById('lock-screen').style.display = 'none';
-      const m = document.getElementById('main');
-      m.style.display = 'block';
-      setTimeout(() => m.classList.add('show'), 10);
-      initAll();
-    }, 600);
-  } else {
-    document.getElementById('lock-error').classList.add('show');
-    lockInput.value = '';
-    dots.forEach(d => d.classList.remove('filled'));
-    setTimeout(() => document.getElementById('lock-error').classList.remove('show'), 2000);
-  }
-}
-
-lockInput.addEventListener('keydown', e => { if(e.key==='Enter') checkPassword(); });
+// INIT ON LOAD
+window.addEventListener('DOMContentLoaded', initAll);
 
 // CLOCK
 function updateClock(){
@@ -892,48 +790,6 @@ function newBlogPost(){
   renderBlogs();
 }
 
-// AI CHAT
-const SYSTEM_PROMPT = `You are Soumya's AI assistant embedded in her personal portfolio. You speak warmly and knowledgeably about Soumya Upreti. Here are the facts about her:
-- Full name: Soumya Upreti
-- 2nd year B.Tech student in Automation & Robotics at USAR (University School of Automation & Robotics), GGSIPU, Delhi
-- Skills: Python, C/C++, MATLAB, Arduino, machine learning basics, NLP, AutoCAD, SolidWorks, ROS basics, kinematics & dynamics, HTML/CSS/JS
-- Hobbies: classical dancer, travelling
-- Based in Delhi, India
-- Contact: soumyaupreti7@gmail.com (personal), soumyaupretiwork@gmail.com (work)
-- LinkedIn: linkedin.com/in/soumya-upreti-9138b9304
-- GitHub: github.com/soumyaupreti
-- Instagram: soumyaupretii
-Answer questions about Soumya in a friendly, first-person-adjacent way (as if speaking on her behalf). Keep responses concise and warm. If asked something you don't know about her, say you're not sure but invite them to reach out directly.`;
-
-async function sendChat(){
-  const inp = document.getElementById('chat-input');
-  const msg = inp.value.trim();
-  if(!msg) return;
-  inp.value='';
-  const msgs = document.getElementById('chat-messages');
-  msgs.innerHTML += `<div class="msg user">${msg}</div>`;
-  msgs.innerHTML += `<div class="msg bot loading" id="chat-loading">Thinking...</div>`;
-  msgs.scrollTop = msgs.scrollHeight;
-  try {
-    const res = await fetch('/api/chat',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        system:SYSTEM_PROMPT,
-        messages:[{role:'user',content:msg}]
-      })
-    });
-    const data = await res.json();
-    const reply = data.content?.find(b=>b.type==='text')?.text || 'Sorry, I couldn\'t process that.';
-    document.getElementById('chat-loading').remove();
-    msgs.innerHTML += `<div class="msg bot">${reply}</div>`;
-  } catch(e) {
-    document.getElementById('chat-loading').textContent = 'Error — please try again.';
-  }
-  msgs.scrollTop = msgs.scrollHeight;
-}
 
 // INIT ALL
 function initAll(){
