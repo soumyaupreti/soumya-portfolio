@@ -205,6 +205,34 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
 .frac span{display:none}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
 
+/* HERO PHOTO */
+.hero-content{display:grid;grid-template-columns:1fr 380px;gap:4rem;align-items:center;min-height:85vh;padding-top:6rem}
+.hero-left{display:flex;flex-direction:column;gap:0}
+.hero-right{display:flex;justify-content:center;align-items:center}
+.hero-photo-wrap{position:relative;width:320px;height:420px}
+.hero-photo{width:100%;height:100%;object-fit:cover;border-radius:20px;position:relative;z-index:2;filter:grayscale(8%)}
+.hero-photo-ring{position:absolute;inset:-12px;border:2px solid var(--accent-light);border-radius:24px;z-index:1;opacity:0.5}
+
+/* ABOUT PHOTO COLLAGE */
+.about-grid{display:grid;grid-template-columns:420px 1fr;gap:3rem;align-items:start}
+.about-photo-col{display:flex;flex-direction:column}
+.about-right{display:flex;flex-direction:column;gap:1.5rem}
+.collage-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:auto auto auto;gap:6px}
+.collage-main{grid-row:1/3;grid-column:1/2;border-radius:12px;overflow:hidden;aspect-ratio:2/3}
+.collage-top-right{grid-row:1/2;grid-column:2/3;border-radius:12px;overflow:hidden;aspect-ratio:3/4}
+.collage-mid-right{grid-row:2/3;grid-column:2/3;border-radius:12px;overflow:hidden;aspect-ratio:3/4}
+.collage-bot-left{grid-row:3/4;grid-column:1/2;border-radius:12px;overflow:hidden;aspect-ratio:16/9}
+.collage-bot-right{grid-row:3/4;grid-column:2/3;border-radius:12px;overflow:hidden;aspect-ratio:16/9}
+.collage-grid img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease;display:block}
+.collage-grid div:hover img{transform:scale(1.04)}
+
+/* CURSOR TRAIL */
+.cursor-trail{position:fixed;pointer-events:none;z-index:9999;width:8px;height:8px;border-radius:50%;background:var(--accent);opacity:0;transition:opacity 0.3s;transform:translate(-50%,-50%)}
+
+/* REVEAL ON SCROLL */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
 /* ANIMATIONS */
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 .fade-up{animation:fadeUp 0.6s ease forwards}
@@ -217,8 +245,12 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
   nav{padding:1rem 1.5rem}
   .nav-links{gap:1rem}
   section{padding:4rem 1.5rem}
-  .about-grid,.contact-grid,.dashboard-grid{grid-template-columns:1fr}
-  .hero-time{position:static;text-align:left;margin-bottom:1rem}
+  .hero-content{grid-template-columns:1fr;gap:2rem;padding-top:5rem;min-height:auto}
+  .hero-right{order:-1}
+  .hero-photo-wrap{width:200px;height:260px}
+  .about-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .cal-layout{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -243,23 +275,33 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
 </nav>
 
 <section class="hero" id="hero">
-  <div class="hero-time">
-    <div class="hero-clock" id="clock">--:--</div>
-    <div class="hero-date" id="date-display"></div>
-  </div>
-  <div class="hero-eyebrow fade-up">Soumya Upreti · Delhi, India</div>
-  <h1 class="hero-name fade-up delay-1">
-    Engineer.<br><em>Artist.</em><br>Explorer.
-  </h1>
-  <p class="hero-role fade-up delay-2">
-    2nd Year Automation & Robotics · USAR, Delhi<br>
-    <span class="typing-text" id="typing-text"></span>
-  </p>
-  <div class="hero-tags fade-up delay-3">
-    <span class="tag">Robotics</span>
-    <span class="tag">AI & NLP</span>
-    <span class="tag">Travelling</span>
-    <span class="tag">USAR Delhi</span>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-eyebrow fade-up">Soumya Upreti · Delhi, India</div>
+      <h1 class="hero-name fade-up delay-1">
+        Engineer.<br><em>Artist.</em><br>Explorer.
+      </h1>
+      <p class="hero-role fade-up delay-2">
+        2nd Year Automation & Robotics · USAR, Delhi<br>
+        <span class="typing-text" id="typing-text"></span>
+      </p>
+      <div class="hero-tags fade-up delay-3">
+        <span class="tag">Robotics</span>
+        <span class="tag">AI & NLP</span>
+        <span class="tag">Travelling</span>
+        <span class="tag">USAR Delhi</span>
+      </div>
+      <div class="hero-time fade-up delay-4">
+        <div class="hero-clock" id="clock">--:--</div>
+        <div class="hero-date" id="date-display"></div>
+      </div>
+    </div>
+    <div class="hero-right fade-up delay-2">
+      <div class="hero-photo-wrap">
+        <img src="images/1000231815.jpg" alt="Soumya Upreti" class="hero-photo"/>
+        <div class="hero-photo-ring"></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -281,31 +323,42 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
   <div class="section-label">About me</div>
   <div class="section-title">A little about<br><em style="font-style:italic;color:var(--accent)">who I am</em></div>
   <div class="about-grid">
-    <div class="about-text">
-      <p>I'm Soumya — a second-year Automation & Robotics student at USAR, Delhi, with a deep curiosity for how intelligent systems work and how creativity can be coded into machines.</p>
-      <p>Beyond engineering, I'm a trained classical dancer — movement has taught me discipline, expression, and attention to detail that I carry into everything I build. I love exploring new places and finding the intersection between art and technology.</p>
-      <p>I believe the best engineers are also the most curious humans.</p>
+    <div class="about-photo-col reveal">
+      <div class="collage-grid">
+        <div class="collage-main"><img src="images/1000165008.jpg" alt="Soumya"/></div>
+        <div class="collage-top-right"><img src="images/1000160025.jpg" alt="Soumya"/></div>
+        <div class="collage-mid-right"><img src="images/1000225631.jpg" alt="Soumya"/></div>
+        <div class="collage-bot-left"><img src="images/1000234002.jpg" alt="Soumya"/></div>
+        <div class="collage-bot-right"><img src="images/c398b5b3-f3c5-40da-8849-f900548dc2c7.jpg" alt="Soumya"/></div>
+      </div>
     </div>
-    <div class="about-facts">
-      <div class="fact-item">
-        <div class="fact-label">Currently</div>
-        <div class="fact-value">2nd Year B.Tech · Automation & Robotics</div>
+    <div class="about-right reveal">
+      <div class="about-text">
+        <p>I'm Soumya — a second-year Automation & Robotics student at USAR, Delhi, with a deep curiosity for how intelligent systems work and how creativity can be coded into machines.</p>
+        <p>Beyond engineering, I'm a trained classical dancer — movement has taught me discipline, expression, and attention to detail that I carry into everything I build. I love exploring new places and finding the intersection between art and technology.</p>
+        <p>I believe the best engineers are also the most curious humans.</p>
       </div>
-      <div class="fact-item">
-        <div class="fact-label">University</div>
-        <div class="fact-value">USAR, GGSIPU · Delhi</div>
-      </div>
-      <div class="fact-item">
-        <div class="fact-label">Art form</div>
-        <div class="fact-value">Professional Kathak dancer</div>
-      </div>
-      <div class="fact-item">
-        <div class="fact-label">Interests</div>
-        <div class="fact-value">AI/NLP, Robotics, Travelling</div>
-      </div>
-      <div class="fact-item">
-        <div class="fact-label">Based in</div>
-        <div class="fact-value">Delhi, India</div>
+      <div class="about-facts">
+        <div class="fact-item">
+          <div class="fact-label">Currently</div>
+          <div class="fact-value">2nd Year B.Tech · Automation & Robotics</div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-label">University</div>
+          <div class="fact-value">USAR, GGSIPU · Delhi</div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-label">Art form</div>
+          <div class="fact-value">Professional Kathak dancer</div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-label">Interests</div>
+          <div class="fact-value">AI/NLP, Robotics, Travelling</div>
+        </div>
+        <div class="fact-item">
+          <div class="fact-label">Based in</div>
+          <div class="fact-value">Delhi, India</div>
+        </div>
       </div>
     </div>
   </div>
@@ -615,6 +668,25 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
 <script>
 // INIT ON LOAD
 window.addEventListener('DOMContentLoaded', initAll);
+
+// CURSOR TRAIL
+const trail = document.createElement('div');
+trail.className = 'cursor-trail';
+document.body.appendChild(trail);
+let trailTimeout;
+document.addEventListener('mousemove', e => {
+  trail.style.left = e.clientX + 'px';
+  trail.style.top = e.clientY + 'px';
+  trail.style.opacity = '0.7';
+  clearTimeout(trailTimeout);
+  trailTimeout = setTimeout(() => trail.style.opacity = '0', 800);
+});
+
+// SCROLL REVEAL
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
 // CLOCK
 function updateClock(){
