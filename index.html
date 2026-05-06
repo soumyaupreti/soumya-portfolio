@@ -268,8 +268,8 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
     <a href="#dashboard">Dashboard</a>
     <a href="#calendar">Calendar</a>
     <a href="#links">Links</a>
-    <a href="#assignment" onclick="document.getElementById('assignment').scrollIntoView({behavior:'smooth'});return false;">Assignment</a>
     <a href="#contact">Contact</a>
+    <a href="#" onclick="toggleAssignPage();return false;" style="color:var(--accent);font-weight:500">Assignment</a>
     <a href="#" onclick="toggleCATPage();return false;" style="color:var(--accent);font-weight:500">CAT 2027</a>
   </div>
 </nav>
@@ -467,53 +467,6 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
 
 <hr class="divider"/>
 
-<!-- ASSIGNMENT SOLVER -->
-<section id="assignment">
-  <div class="section-label">Assignment solver</div>
-  <div class="section-title">Write it like<br><em style="font-style:italic;color:var(--accent)">an answer</em></div>
-  <div class="asgn-container">
-    <div class="asgn-top-row">
-      <div class="asgn-field">
-        <label class="asgn-label">Subject / context <span style="color:var(--muted);font-weight:300">(optional)</span></label>
-        <input type="text" id="asgn-subject" placeholder="e.g. Industrial Engineering, Business Ethics, Robotics..." />
-      </div>
-      <div class="asgn-field" style="flex:0.4">
-        <label class="asgn-label">Marks / word limit <span style="color:var(--muted);font-weight:300">(optional)</span></label>
-        <input type="text" id="asgn-marks" placeholder="e.g. 5 marks, 300 words" />
-      </div>
-    </div>
-    <div class="asgn-field" style="margin-top:1rem">
-      <label class="asgn-label">Your question</label>
-      <textarea id="asgn-question" placeholder="Paste or type your assignment question here..." rows="4"></textarea>
-    </div>
-    <div class="asgn-options">
-      <span class="asgn-options-label">Answer style</span>
-      <div class="asgn-style-btns">
-        <button class="asgn-style-btn active" data-style="auto" onclick="selectStyle(this)">Auto detect</button>
-        <button class="asgn-style-btn" data-style="structured" onclick="selectStyle(this)">Structured (headings)</button>
-        <button class="asgn-style-btn" data-style="paragraph" onclick="selectStyle(this)">Paragraphs</button>
-        <button class="asgn-style-btn" data-style="points" onclick="selectStyle(this)">Point-wise</button>
-        <button class="asgn-style-btn" data-style="short" onclick="selectStyle(this)">Short answer</button>
-      </div>
-    </div>
-    <button class="asgn-submit" id="asgn-submit" onclick="solveAssignment()">Generate answer ↗</button>
-
-    <!-- OUTPUT -->
-    <div class="asgn-output-wrap" id="asgn-output-wrap" style="display:none">
-      <div class="asgn-output-header">
-        <div class="asgn-output-title">Answer</div>
-        <div style="display:flex;gap:0.6rem">
-          <button class="asgn-copy-btn" onclick="copyAnswer()">Copy</button>
-          <button class="asgn-copy-btn" onclick="clearAnswer()">Clear</button>
-        </div>
-      </div>
-      <div class="asgn-answer" id="asgn-answer"></div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider"/>
-
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-label">Get in touch</div>
@@ -543,6 +496,68 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
 </footer>
 
 </div><!-- end #main -->
+
+<!-- ASSIGNMENT PAGE -->
+<div id="assign-page" style="display:none;opacity:0;transition:opacity 0.4s ease;">
+<style>
+.asgn-nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1.2rem 3rem;display:flex;justify-content:space-between;align-items:center;background:rgba(250,248,244,0.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--border)}
+.asgn-wrap{max-width:900px;margin:0 auto;padding:7rem 3rem 4rem}
+.asgn-hero{text-align:center;margin-bottom:3rem}
+.asgn-page-eyebrow{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem}
+.asgn-page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2.5rem,7vw,5rem);font-weight:300;line-height:1;margin-bottom:1rem}
+.asgn-page-title em{font-style:italic;color:var(--accent)}
+.asgn-page-sub{font-size:0.88rem;color:var(--muted);letter-spacing:0.05em}
+@media(max-width:768px){.asgn-nav{padding:1rem 1.5rem}.asgn-wrap{padding:6rem 1.5rem 3rem}}
+</style>
+<div class="asgn-nav">
+  <div class="nav-logo">SU · Assignment</div>
+  <button class="cat-back" onclick="toggleAssignPage()">← Back to portfolio</button>
+</div>
+<div class="asgn-wrap">
+  <div class="asgn-hero">
+    <div class="asgn-page-eyebrow">Assignment solver</div>
+    <h1 class="asgn-page-title">Write it like<br><em>an answer</em></h1>
+    <div class="asgn-page-sub">AI-powered · Mixed subjects · Auto-formats by question type</div>
+  </div>
+  <div class="asgn-container">
+    <div class="asgn-top-row">
+      <div class="asgn-field">
+        <label class="asgn-label">Subject / context <span style="color:var(--muted);font-weight:300">(optional)</span></label>
+        <input type="text" id="asgn-subject" placeholder="e.g. Industrial Engineering, Business Ethics, Robotics..." />
+      </div>
+      <div class="asgn-field" style="flex:0.4">
+        <label class="asgn-label">Marks / word limit <span style="color:var(--muted);font-weight:300">(optional)</span></label>
+        <input type="text" id="asgn-marks" placeholder="e.g. 5 marks, 300 words" />
+      </div>
+    </div>
+    <div class="asgn-field" style="margin-top:1rem">
+      <label class="asgn-label">Your question</label>
+      <textarea id="asgn-question" placeholder="Paste or type your assignment question here..." rows="4"></textarea>
+    </div>
+    <div class="asgn-options">
+      <span class="asgn-options-label">Answer style</span>
+      <div class="asgn-style-btns">
+        <button class="asgn-style-btn active" data-style="auto" onclick="selectStyle(this)">Auto detect</button>
+        <button class="asgn-style-btn" data-style="structured" onclick="selectStyle(this)">Structured (headings)</button>
+        <button class="asgn-style-btn" data-style="paragraph" onclick="selectStyle(this)">Paragraphs</button>
+        <button class="asgn-style-btn" data-style="points" onclick="selectStyle(this)">Point-wise</button>
+        <button class="asgn-style-btn" data-style="short" onclick="selectStyle(this)">Short answer</button>
+      </div>
+    </div>
+    <button class="asgn-submit" id="asgn-submit" onclick="solveAssignment()">Generate answer ↗</button>
+    <div class="asgn-output-wrap" id="asgn-output-wrap" style="display:none">
+      <div class="asgn-output-header">
+        <div class="asgn-output-title">Answer</div>
+        <div style="display:flex;gap:0.6rem">
+          <button class="asgn-copy-btn" onclick="copyAnswer()">Copy</button>
+          <button class="asgn-copy-btn" onclick="clearAnswer()">Clear</button>
+        </div>
+      </div>
+      <div class="asgn-answer" id="asgn-answer"></div>
+    </div>
+  </div>
+</div>
+</div><!-- end #assign-page -->
 
 <!-- CAT 2027 PAGE -->
 <div id="cat-page" style="display:none;opacity:0;transition:opacity 0.4s ease;">
@@ -1268,8 +1283,22 @@ function markDone(id, vidNum){
   renderCATAll();
 }
 
-// PAGE TOGGLE
-function toggleCATPage(){
+// PAGE TOGGLE - ASSIGNMENT
+function toggleAssignPage(){
+  const main = document.getElementById('main');
+  const assign = document.getElementById('assign-page');
+  const isShowing = assign.style.display === 'block';
+  if(isShowing){
+    assign.style.opacity='0';
+    setTimeout(()=>{ assign.style.display='none'; main.style.display='block'; setTimeout(()=>main.style.opacity='1',10); },400);
+  } else {
+    main.style.opacity='0';
+    setTimeout(()=>{ main.style.display='none'; assign.style.display='block'; setTimeout(()=>assign.style.opacity='1',10); },400);
+  }
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// PAGE TOGGLE - CAT
   const main = document.getElementById('main');
   const cat = document.getElementById('cat-page');
   const isShowingCAT = cat.style.display === 'block';
