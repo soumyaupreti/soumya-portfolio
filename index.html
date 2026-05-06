@@ -1290,24 +1290,41 @@ function toggleAssignPage(){
   const isShowing = assign.style.display === 'block';
   if(isShowing){
     assign.style.opacity='0';
-    setTimeout(()=>{ assign.style.display='none'; main.style.display='block'; setTimeout(()=>main.style.opacity='1',10); },400);
+    setTimeout(()=>{
+      assign.style.display='none';
+      main.style.display='block';
+      setTimeout(()=>{ main.style.opacity='1'; },10);
+    },400);
   } else {
     main.style.opacity='0';
-    setTimeout(()=>{ main.style.display='none'; assign.style.display='block'; setTimeout(()=>assign.style.opacity='1',10); },400);
+    setTimeout(()=>{
+      main.style.display='none';
+      assign.style.display='block';
+      setTimeout(()=>assign.style.opacity='1',10);
+    },400);
   }
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
 // PAGE TOGGLE - CAT
+function toggleCATPage(){
   const main = document.getElementById('main');
   const cat = document.getElementById('cat-page');
   const isShowingCAT = cat.style.display === 'block';
   if(isShowingCAT){
     cat.style.opacity='0';
-    setTimeout(()=>{ cat.style.display='none'; main.style.display='block'; setTimeout(()=>main.style.opacity='1',10); },400);
+    setTimeout(()=>{
+      cat.style.display='none';
+      main.style.display='block';
+      setTimeout(()=>{ main.style.opacity='1'; },10);
+    },400);
   } else {
     main.style.opacity='0';
-    setTimeout(()=>{ main.style.display='none'; cat.style.display='block'; setTimeout(()=>{ cat.style.opacity='1'; renderCATAll(); },10); },400);
+    setTimeout(()=>{
+      main.style.display='none';
+      cat.style.display='block';
+      setTimeout(()=>{ cat.style.opacity='1'; renderCATAll(); },10);
+    },400);
   }
   window.scrollTo({top:0,behavior:'smooth'});
 }
