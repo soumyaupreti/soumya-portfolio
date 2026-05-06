@@ -68,8 +68,8 @@ section:first-of-type{padding-top:8rem}
 .hero-name em{font-style:italic;color:var(--accent)}
 .hero-role{font-size:0.9rem;color:var(--muted);letter-spacing:0.05em;margin-bottom:2.5rem;line-height:1.7}
 .typing-text{color:var(--accent);font-weight:500}
-.hero-time{position:absolute;top:7rem;right:0;text-align:right}
-.hero-clock{font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:300;color:var(--ink);line-height:1}
+.hero-time{text-align:left;margin-top:2rem}
+.hero-clock{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;color:var(--ink);line-height:1}
 .hero-date{font-size:0.75rem;color:var(--muted);letter-spacing:0.12em;text-transform:uppercase;margin-top:0.3rem}
 .hero-tags{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem}
 .tag{font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.35rem 0.9rem;border:1px solid var(--border);border-radius:99px;color:var(--muted)}
@@ -236,7 +236,7 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
 /* HERO PHOTO */
 .hero-content{display:grid;grid-template-columns:1fr 380px;gap:4rem;align-items:center;min-height:85vh;padding-top:6rem}
 .hero-left{display:flex;flex-direction:column;gap:0}
-.hero-right{display:flex;justify-content:center;align-items:center}
+.hero-right{display:flex;flex-direction:column;justify-content:center;align-items:center}
 .hero-photo-wrap{position:relative;width:320px;height:420px}
 .hero-photo{width:100%;height:100%;object-fit:cover;border-radius:20px;position:relative;z-index:2;filter:grayscale(8%)}
 .hero-photo-ring{position:absolute;inset:-12px;border:2px solid var(--accent-light);border-radius:24px;z-index:1;opacity:0.5}
@@ -245,14 +245,14 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
 .about-grid{display:grid;grid-template-columns:420px 1fr;gap:3rem;align-items:start}
 .about-photo-col{display:flex;flex-direction:column}
 .about-right{display:flex;flex-direction:column;gap:1.5rem}
-.collage-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.collage-main{grid-column:1/2;border-radius:12px;overflow:hidden}
-.collage-top-right{grid-column:2/3;border-radius:12px;overflow:hidden}
-.collage-mid-right{grid-column:2/3;border-radius:12px;overflow:hidden}
-.collage-bot-left{grid-column:1/2;border-radius:12px;overflow:hidden}
-.collage-bot-right{grid-column:2/3;border-radius:12px;overflow:hidden}
-.collage-grid img{width:100%;height:auto;display:block;transition:transform 0.4s ease}
-.collage-grid div:hover img{transform:scale(1.02)}
+.collage-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,200px);gap:6px}
+.collage-main{grid-column:1/2;grid-row:1/3;border-radius:12px;overflow:hidden}
+.collage-top-right{grid-column:2/3;grid-row:1/2;border-radius:12px;overflow:hidden}
+.collage-mid-right{grid-column:2/3;grid-row:2/3;border-radius:12px;overflow:hidden}
+.collage-bot-left{grid-column:1/2;grid-row:3/4;border-radius:12px;overflow:hidden}
+.collage-bot-right{grid-column:2/3;grid-row:3/4;border-radius:12px;overflow:hidden}
+.collage-grid img{width:100%;height:100%;object-fit:cover;object-position:top;display:block;transition:transform 0.4s ease}
+.collage-grid div:hover img{transform:scale(1.03)}
 
 /* CURSOR TRAIL */
 .cursor-trail{position:fixed;pointer-events:none;z-index:9999;width:8px;height:8px;border-radius:50%;background:var(--accent);opacity:0;transition:opacity 0.3s;transform:translate(-50%,-50%)}
@@ -328,12 +328,12 @@ footer{border-top:1px solid var(--border);padding:2rem 3rem;display:flex;justify
         <span class="tag">Travelling</span>
         <span class="tag">USAR Delhi</span>
       </div>
-      <div class="hero-time fade-up delay-4">
+    </div>
+    <div class="hero-right fade-up delay-2">
+      <div class="hero-time" style="text-align:center;margin-bottom:1rem">
         <div class="hero-clock" id="clock">--:--</div>
         <div class="hero-date" id="date-display"></div>
       </div>
-    </div>
-    <div class="hero-right fade-up delay-2">
       <div class="hero-photo-wrap">
         <img src="images/1000231815.JPG" alt="Soumya Upreti" class="hero-photo"/>
         <div class="hero-photo-ring"></div>
